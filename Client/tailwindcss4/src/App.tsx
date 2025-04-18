@@ -9,7 +9,7 @@ function App() {
 
     try {
       
-      const response = await fetch(fetch("https://ai-chatbot-backend.onrender.com/chat", {
+      const response = await fetch("https://ai-chatbot-backend.onrender.com/chat", {
  
         method: 'POST',
         headers: {
