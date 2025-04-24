@@ -11,19 +11,32 @@ export default function Signup() {
 
     try {
       const res = await axios.post("http://localhost:5000/auth/signup", form, {
-        withCredentials: true,
+      withCredentials: true,
       });
-      alert("Signup successful");
-      console.log("Signup successful:", res.data);
-      // Navigate to login or show success message
-      navigate("/login"); // Optional: Redirect user to login page after signup
-    } catch (error) {
-      if (error.response.status === 400 && error.response.data.message === "User already exists") {
-        alert("User already exists"); // Use alert in the frontend
-    }
-      console.error("Signup failed:", error);
-    }
-  };
+      
+       alert("Signup successful");
+       console.log("Signup successful:", res.data);
+       navigate("/login");
+     } catch (error) {
+       console.error("Signup failed:", error);
+      
+            if (axios.isAxiosError(error) && error.response) {
+                console.error("Server response data:", error.response.data);
+                console.error("Server response status:", error.response.status);
+      
+                if (error.response.status === 400 && error.response.data.message === "User already exists") {
+                    alert("User already exists");
+                } else {
+                    const serverErrorMessage = error.response.data.message || `Error: ${error.response.status}`;
+                    alert(serverErrorMessage);
+                }
+      
+            } else {
+                const networkErrorMessage = "Signup failed. Please check your network or try again later.";
+                alert(networkErrorMessage);
+            }
+     }
+       };
 
   return (
     <>
