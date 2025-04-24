@@ -1,0 +1,1 @@
+Built a full-stack chatbot that handles real-time user queries. Integrated Gemini Flash 2.0 API for intelligent, context-aware responses. Frontend hosted on Vercel, backend on Render, version-controlled on GitHub.
