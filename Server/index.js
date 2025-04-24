@@ -3,22 +3,41 @@ const Chat = require('./models/chat');
 const axios = require("axios");
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 require('dotenv').config();
+const authRoutes = require('./routes/auth');
+const User = require("./models/User");
+const bcrypt = require("bcryptjs");
+const chatRoutes = require('./routes/chat');
+const { AiOutlineOneToOne } = require('react-icons/ai');
+const authMiddleware = require("./middleware/authMiddleware");
+const app = express();
+
+app.use(cors({
+  origin:  'http://localhost:5173',
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
+
+app.get("/test-cors", (req, res) => {
+  res.json({ message: "CORS working fine!" });
+});
+app.use(express.json());
+// app.use(bodyParser.json());
+app.use('/', chatRoutes);
+app.use('/auth',authRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("Connected to MongoDB"))
 .catch((err) => console.error("MongoDB connection Error:", err));
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.send("Server is running.");
 });
 
-app.post('/chat', async (req, res) => {
+app.post('/chat', authMiddleware , async (req, res) => {
+  const userId = req.user.id;
   const userMessage = req.body.message;
 
   try {
@@ -41,6 +60,7 @@ app.post('/chat', async (req, res) => {
     const botReply = response.data.candidates[0].content.parts[0].text;
 
     await Chat.create({
+      userId : userId,
       message: userMessage,
       reply: botReply
     });
@@ -53,9 +73,10 @@ app.post('/chat', async (req, res) => {
 });
 
 // ✅ Add this route
-app.get('/history', async (req, res) => {
+app.get('/history', authMiddleware, async (req, res) => {
+  const userId = req.user.id;
   try {
-    const chats = await Chat.find().sort({ createdAt: -1 });
+    const chats = await Chat.find({userId:userId}).sort({ createdAt: -1 });
     const formatted = chats.map(chat => ({
       userMessage: chat.message,
       botReply: chat.reply
@@ -66,6 +87,8 @@ app.get('/history', async (req, res) => {
     res.status(500).json({ error: "Failed to fetch chat history." });
   }
 });
+
+
 
 const PORT = 5000;
 app.listen(PORT, () => {

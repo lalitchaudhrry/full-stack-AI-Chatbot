@@ -6,6 +6,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [ 
     tailwindcss(),
-    react()],
+    react()], 
+      server: { // Add this server block
+      port: 5173 // Specify the desired port
+    }
+  })
   
-})
