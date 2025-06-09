@@ -13,7 +13,7 @@ const authMiddleware = require("./middleware/authMiddleware");
 const app = express();
 
 app.use(cors({
-  origin:  'https://full-stack-ai-chatbot.vercel.app/',
+  origin:  'https://full-stack-ai-chatbot.vercel.app',
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
