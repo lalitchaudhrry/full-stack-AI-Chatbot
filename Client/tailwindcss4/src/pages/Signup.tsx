@@ -10,7 +10,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/auth/signup", form, {
+      const res = await axios.post("https://full-stack-ai-chatbot-backend.onrender.com/auth/signup", form, {
       withCredentials: true,
       });
       

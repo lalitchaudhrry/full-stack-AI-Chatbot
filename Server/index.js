@@ -13,7 +13,7 @@ const authMiddleware = require("./middleware/authMiddleware");
 const app = express();
 
 app.use(cors({
-  origin:  'http://localhost:5173',
+  origin:  'https://full-stack-ai-chatbot.vercel.app/',
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
@@ -27,7 +27,10 @@ app.use(express.json());
 app.use('/', chatRoutes);
 app.use('/auth',authRoutes);
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
 .then(() => console.log("Connected to MongoDB"))
 .catch((err) => console.error("MongoDB connection Error:", err));
 

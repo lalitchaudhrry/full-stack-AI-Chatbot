@@ -29,7 +29,7 @@ export default function ChatApp() {
 
     try {
       if (isGuest) {
-        const response = await fetch("http://localhost:5000/chat", {
+        const response = await fetch("https://full-stack-ai-chatbot-backend.onrender.com/chat", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export default function ChatApp() {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/chat", {
+      const response = await fetch("https://full-stack-ai-chatbot-backend.onrender.com/chat", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export default function ChatApp() {
       }
 
       try {
-        const res = await fetch('http://localhost:5000/history', {
+        const res = await fetch('https://full-stack-ai-chatbot-backend.onrender.com/history', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
